@@ -15,23 +15,23 @@ router.get('/', function (req, res) {
 /* POST /users */
 router.post('/', function (req, res, next) {
     console.log(req.body)
-//    if (!req.headers.authorization) {
-//        res.json({
-//            error: 'No credentials sent!'
-//        })
-//    } else {
-//        var encoded = req.headers.authorization.split(' ')[1];
-//        var decoded = new Buffer(encoded, 'base64').toString('utf8');
-//        console.log(encoded);
-//        console.log(decoded);
-//    }
+        //    if (!req.headers.authorization) {
+        //        res.json({
+        //            error: 'No credentials sent!'
+        //        })
+        //    } else {
+        //        var encoded = req.headers.authorization.split(' ')[1];
+        //        var decoded = new Buffer(encoded, 'base64').toString('utf8');
+        //        console.log(encoded);
+        //        console.log(decoded);
+        //    }
     usersSchema.create(req.body, function (err, post) {
         if (err) return next(err);
-        var userid=post._id;
+        var userid = post._id;
         console.log(userid);
         //res.setRequestHeader("Content-type", "text");
         //res.responseText=userid;
-        res.send('Hello World!');
+        res.send('success');
     });
 });
 
@@ -59,15 +59,18 @@ router.delete('/:id', function (req, res, next) {
     });
 });
 
-/* GET /users/username/:username/password/:password */
-router.get('/username/:username/password/:password', function (req, res, next) {
-    usersSchema.find({
-        "username": req.params.username,
-        "password": req.params.password
-    }, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
+/* POST /users/search/authenticate/ */
+router.post('/search/authenticate', function (req, res, next) {
+    usersSchema.count(req.body, function (err, usercount) {
+        if (err) res.send("fail");
+        console.log(usercount);
+        if (usercount == 0) {
+            res.send('fail');
+        } else {
+            res.send('success');
+        }
     });
+
 });
 
 /* POST /users/search/json */

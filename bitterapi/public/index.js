@@ -85,7 +85,7 @@ buttons[1].onclick = register;
 buttons[0].onclick = login;
 
 function register() {
-    //var request = getRequest();
+    var request = getRequest();
     var username = document.getElementById('name').value;
     var bitsid = document.getElementById('bitsid').value;
     var password = document.getElementById('password').value;
@@ -96,47 +96,25 @@ function register() {
             "password": password,
             "bitsid": bitsid
         }
-
-        $.ajax({
-            url: 'http://172.16.121.175:3000/users',
-            type: 'post',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data.msg);
-            },
-            data: user
-        });
-
-        //var params = "backend/register.php?username=" + username + "&password=" + password + "&bitsid=" + bitsid;
-        // new HttpRequest instance 
-        //request.open("POST", "http://172.16.121.175:3000/users");
-        //request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        //request.setRequestHeader("Connection", "close");
-        //request.send(JSON.stringify({
-        //    "username": username,
-        //    "password": password
-        //}));
-        //        request.onreadystatechange = function () {
-        //            if (request.readyState == 4 && request.status == 200) {
-        //                if (request.responseText != "fail") {
-        //                    toastr.success('You have been registered as ' + username + '.', 'Registration Successful');
-        //                    container.classList.remove('active');
-        //                    //toggle.innerHTML="&#9998;";
-        //                    toggle.innerHTML = "person_add";
-        //                    document.getElementById('Username').value = username;
-        //                }
-        //                if (request.responseText == "fail") {
-        //                    //                        swal({
-        //                    //                          title: "Username Exists",
-        //                    //                          text: "I'm sorry but the username you entered is already taken. Please try another username.",
-        //                    //                          type: "error",
-        //                    //                          confirmButtonText: "Okay!"
-        //                    //                        });
-        //                    toastr.error('This username is already taken.', 'Username Taken');
-        //                }
-        //            }
-    //}
-};
+        request.open("POST", "/users");
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.setRequestHeader("Connection", "close");
+        request.send(JSON.stringify(user));
+        request.onreadystatechange = function () {
+            if (request.readyState == 4 && request.status == 200) {
+                if (request.responseText == "success") {
+                    toastr.success('You have been registered as ' + username + '.', 'Registration Successful');
+                    container.classList.remove('active');
+                    //toggle.innerHTML="&#9998;";
+                    toggle.innerHTML = "person_add";
+                    document.getElementById('Username').value = username;
+                }
+                if (request.responseText == "fail") {
+                    toastr.error('This username is already taken.', 'Username Taken');
+                }
+            }
+        }
+    };
 
 }
 
@@ -197,16 +175,17 @@ function onpasspress2(e) {
 }
 
 function login() {
-    bringmain();
     var request = getRequest();
     var username = document.getElementById('Username').value;
     var password = document.getElementById('Password').value;
-    var params = "backend/login.php?username=" + username + "&password=" + password;
-    request.open("GET", params, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.setRequestHeader("Content-length", params.length);
+    var user = {
+            "username": username,
+            "password": password
+        }
+    request.open("POST", "/users/search/authenticate");
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     request.setRequestHeader("Connection", "close");
-    request.send();
+    request.send(JSON.stringify(user));
     request.onreadystatechange = function () {
 
         if (request.readyState == 4 && request.status == 200) {
@@ -724,20 +703,5 @@ var opennewpost = function () {
 t = 0;
 window.setInterval(function () {
     console.log(t++);
-    var lastpostime = document.getElementById('post_wrapper').firstElementChild.getAttribute('created_time');
-    var request = getRequest();
-    var params = "backend/checknewposts.php?userid=" + curuserid + "&lastposttime=" + lastpostime;
-    request.open("GET", params, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.setRequestHeader("Content-length", params.length);
-    request.setRequestHeader("Connection", "close");
-    request.send();
-    request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            if (request.responseText = "success") {
-                //alert("Logged out");
-                console.log("There are new posts.");
-            }
-        }
-    }
+    // TODO Insert refresh code here.
 }, 5000)
