@@ -6,8 +6,11 @@ var usersSchema = require('../models/usersSchema.js');
 
 /* GET /users */
 router.get('/', function (req, res) {
-    usersSchema.find(function (err, users) {
+    usersSchema.find({},{"password":false},function (err, users) {
         if (err) return next(err);
+        for(var i = 0; i < users.length; i++) {
+            delete users[i].password;
+        }
         res.json(users);
     });
 });
@@ -37,7 +40,7 @@ router.post('/', function (req, res, next) {
 
 /* GET /users/id */
 router.get('/:id', function (req, res, next) {
-    usersSchema.findById(req.params.id, function (err, post) {
+    usersSchema.findById(req.params.id,{"password":false}, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
@@ -47,7 +50,7 @@ router.get('/:id', function (req, res, next) {
 router.put('/:id', function (req, res, next) {
     usersSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
-        res.json(post);
+        res.send("success");
     });
 });
 
@@ -55,7 +58,7 @@ router.put('/:id', function (req, res, next) {
 router.delete('/:id', function (req, res, next) {
     usersSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
-        res.json(post);
+        res.send("success");
     });
 });
 
@@ -64,10 +67,13 @@ router.post('/search/authenticate', function (req, res, next) {
     usersSchema.count(req.body, function (err, usercount) {
         if (err) res.send("fail");
         console.log(usercount);
-        if (usercount == 0) {
+        if (usercount !=1) {
             res.send('fail');
-        } else {
-            res.send('success');
+        }
+        if(usercount==1){
+            usersSchema.find(req.body, {"password":false}, function (err, user) {
+                res.json(user);
+            });
         }
     });
 
@@ -75,7 +81,8 @@ router.post('/search/authenticate', function (req, res, next) {
 
 /* POST /users/search/json */
 router.post('/search/json', function (req, res, next) {
-    usersSchema.find(req.body, function (err, post) {
+    usersSchema.find(req.body,{"password":false}, function (err, post) {
+
         if (err) return next(err);
         res.json(post);
     });

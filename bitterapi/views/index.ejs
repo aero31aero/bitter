@@ -7,8 +7,7 @@
 </head>
 <link rel="stylesheet" type="text/css" href="index.css" />
 <link href="libraries/random/css/bootstrap-tour-standalone.min.css" rel="stylesheet" />
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <body>
     <div class="background-image">
         <div class="background-blur"></div>
@@ -249,7 +248,7 @@
                     </div>
                 </div>
             </div>
-            <div class="button material-icons tooltip" id="goToTop" title="Go To Top" onclick="document.getElementById('scrollable').scrollTop=0">publish</div>
+            <div class="button material-icons tooltip hidden-element" id="goToTop" title="Refresh" onclick="document.getElementById('scrollable').scrollTop=0;loadbitts();">refresh</div>
             <div id='button_drawer'>
                 <div class="button hidden-element tooltip b-about-us material-icons" title="About Us" onclick="onbragclick()">contacts</div>
                 <div class="button hidden-element tooltip b-feedback inactive material-icons" id='open_composer' title="Give Feedback">feedback</div>

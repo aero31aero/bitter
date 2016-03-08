@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var usersSchema = new mongoose.Schema({
-    userid: String,
+    username: String,
     bittcontent: String,
     bittheader: String,
     updated_at: { type: Date, default: Date.now },

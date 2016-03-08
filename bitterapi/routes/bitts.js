@@ -6,7 +6,7 @@ var bittsSchema = require('../models/bittsSchema.js');
 
 /* GET /bitts */
 router.get('/', function (req, res) {
-    bittsSchema.find(function (err, bitts) {
+    bittsSchema.find({}, function (err, bitts) {
         if (err) return next(err);
         res.json(bitts);
     });
@@ -40,6 +40,14 @@ router.get('/:id', function (req, res, next) {
     bittsSchema.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
+    });
+});
+
+/* GET /bitts/posts/count */
+router.get('/posts/count', function (req, res, next) {
+    bittsSchema.count(function (err, post) {
+        if (err) return next(err);
+        res.send("bitts="+post);
     });
 });
 
