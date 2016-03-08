@@ -2,17 +2,17 @@ var express = require('express');
 var router = express.Router();
 
 var mongoose = require('mongoose');
-var usersSchema = require('../models/usersSchema.js');
+var bittsSchema = require('../models/bittsSchema.js');
 
-/* GET /users */
+/* GET /bitts */
 router.get('/', function (req, res) {
-    usersSchema.find(function (err, users) {
+    bittsSchema.find(function (err, bitts) {
         if (err) return next(err);
-        res.json(users);
+        res.json(bitts);
     });
 });
 
-/* POST /users */
+/* POST /bitts */
 router.post('/', function (req, res, next) {
     console.log(req.body)
 //    if (!req.headers.authorization) {
@@ -25,54 +25,53 @@ router.post('/', function (req, res, next) {
 //        console.log(encoded);
 //        console.log(decoded);
 //    }
-    usersSchema.create(req.body, function (err, post) {
+    bittsSchema.create(req.body, function (err, post) {
         if (err) return next(err);
-        var userid=post._id;
-        console.log(userid);
+        var bittid=post._id;
+        console.log(bittid);
         //res.setRequestHeader("Content-type", "text");
         //res.responseText=userid;
         res.send('Hello World!');
     });
 });
 
-/* GET /users/id */
+/* GET /bitts/id */
 router.get('/:id', function (req, res, next) {
-    usersSchema.findById(req.params.id, function (err, post) {
+    bittsSchema.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* PUT /users/:id */
+/* PUT /bitts/:id */
 router.put('/:id', function (req, res, next) {
-    usersSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    bittsSchema.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* DELETE /users/:id */
+/* DELETE /bitts/:id */
 router.delete('/:id', function (req, res, next) {
-    usersSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+    bittsSchema.findByIdAndRemove(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* GET /users/username/:username/password/:password */
-router.get('/username/:username/password/:password', function (req, res, next) {
-    usersSchema.find({
-        "username": req.params.username,
-        "password": req.params.password
+/* GET /bitts/userid/:userid/ */
+router.get('/userid/:userid', function (req, res, next) {
+    bittsSchema.find({
+        "userid": req.params.userid
     }, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* POST /users/search/json */
+/* POST /bitts/search/json */
 router.post('/search/json', function (req, res, next) {
-    usersSchema.find(req.body, function (err, post) {
+    bittsSchema.find(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });

@@ -723,21 +723,5 @@ var opennewpost = function () {
 // session management
 t = 0;
 window.setInterval(function () {
-    console.log(t++);
-    var lastpostime = document.getElementById('post_wrapper').firstElementChild.getAttribute('created_time');
-    var request = getRequest();
-    var params = "backend/checknewposts.php?userid=" + curuserid + "&lastposttime=" + lastpostime;
-    request.open("GET", params, true);
-    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    request.setRequestHeader("Content-length", params.length);
-    request.setRequestHeader("Connection", "close");
-    request.send();
-    request.onreadystatechange = function () {
-        if (request.readyState == 4 && request.status == 200) {
-            if (request.responseText = "success") {
-                //alert("Logged out");
-                console.log("There are new posts.");
-            }
-        }
-    }
+    //timed code
 }, 5000)
