@@ -313,6 +313,14 @@ var opennewpost = function () {
             inputPlaceholder: "Say what you wanna say..."
         },
         function (inputValue) {
+            if(inputValue==null){
+                toastr.error('Type some stuff, at least.', 'Oops.');
+                return 0;
+            }
+            if(inputValue==false){
+                //toastr.error('Some weird shit just took place.', 'Oops.');
+                return 0;
+            }
             var request = getRequest()
             var bitt = {
                 "username": curusername,
