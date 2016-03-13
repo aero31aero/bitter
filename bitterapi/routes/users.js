@@ -81,7 +81,7 @@ router.post('/search/authenticate', function (req, res, next) {
 
 /* POST /users/search/json */
 router.post('/search/json', function (req, res, next) {
-    usersSchema.find(req.body,{"password":false}, function (err, post) {
+    usersSchema.find(req.body, function (err, post) {
 
         if (err) return next(err);
         res.json(post);

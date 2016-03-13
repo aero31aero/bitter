@@ -18,7 +18,7 @@ function loadToasterOptions() {
         "debug": false,
         "newestOnTop": true,
         "progressBar": true,
-        "positionClass": "toast-top-left",
+        "positionClass": "toast-top-right",
         "preventDuplicates": false,
         "onclick": null,
         "showDuration": "300",
@@ -85,8 +85,6 @@ var idclicked = null;
 buttons[1].onclick = register;
 buttons[0].onclick = login;
 
-
-
 function register() {
     var request = getRequest();
     var username = document.getElementById('name').value;
@@ -106,7 +104,6 @@ function register() {
         request.onreadystatechange = function () {
             if (request.readyState == 4 && request.status == 200) {
                 if (request.responseText == "success") {
-                    
                     toastr.success('You have been registered as ' + username + '.', 'Registration Successful');
                     container.classList.remove('active');
                     //toggle.innerHTML="&#9998;";
@@ -345,34 +342,6 @@ var opennewpost = function () {
                 }
             }
 
-        });
-};
-
-var forgotpass = function () {
-    swal({
-            title: "Forgot Password",
-            type: "input",
-            inputType: "text",
-            showCancelButton: true,
-            closeOnConfirm: true,
-            animation: "slide-from-bottom",
-            "confirmButtonColor": "#00563a",
-            inputPlaceholder: "Enter your userid"
-        },
-        function (inputValue) {
-            toastr.info(inputValue);
-            var request= getRequest();
-            request.open('POST',"/users/search/json");
-            request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            request.setRequestHeader("Connection", "close");
-            request.send("{\"username\":\""+inputValue+"\"}");
-            request.onreadystatechange = function (){
-                if(request.readyState==4 && request.status==200){
-                    var userdata=JSON.parse(request.responseText);
-                    var password1=userdata[0].password;
-                    toastr.warning("Your Password Is: "+password1);
-                }
-            }
         });
 };
 
